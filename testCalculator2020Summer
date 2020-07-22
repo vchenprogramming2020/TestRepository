@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>simple calculator</title>
+    <style>
+        /*设置table样式*/
+        table {
+            border: 2px solid;
+            padding: 5px;
+            border-spacing: 0px;
+            border-radius: 5px;
+            color: #ffc936;
+            box-shadow: 5px 5px #ffe7a6;
+        }
+        /*设置单元格样式*/
+        td {
+            border: 0px;
+            text-align: center;
+            padding: 5px;
+        }
+        /*设置按钮样式*/
+        .button {
+            background-color: #ffdb66;
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            width: 30px;
+            border-radius: 10px;
+        }
+        /*设置按钮下沉样式*/
+        .button:hover {
+            background-color: #f7c52d;
+            box-shadow: 0.3px 0.3px inset;
+        }
+        /*设置结果框样式*/
+        .resultBox {
+            background-color: #EEEEEE;
+            font-family: Courier New, Courier, monospace;
+            border: none;
+            color: black;
+            padding: 10px 10px;
+            text-align: right;
+            vertical-align: text-bottom;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            width: 210px;
+            height: 30px;
+            border-radius: 3px;
+            box-shadow: 1px 1px #AAAAAA inset;
+        }
+        /*设置标题样式*/
+        .title {
+            text-align: center;
+            font-size: 18px;
+            font-family: Courier New, Courier, monospace;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Simple Calculator</div>
+    <table align="center" border="1" width="200">
+        <tr>
+            <td colspan="4"><div class="resultBox">default</div></td>
+        </tr>
+
+        <tr>
+            <td><div class="button">C</div></td>
+            <td><div class="button">+/-</div></td>
+            <td><div class="button">%</div></td>
+            <td><div class="button">÷</div></td>
+        </tr>
+
+        <tr>
+            <td><div class="button">9</div></td>
+            <td><div class="button">8</div></td>
+            <td><div class="button">7</div></td>
+            <td><div class="button">×</div></td>
+        </tr>
+
+        <tr>
+            <td><div class="button">6</div></td>
+            <td><div class="button">5</div></td>
+            <td><div class="button">4</div></td>
+            <td><div class="button">-</div></td>
+        </tr>
+
+        <tr>
+            <td><div class="button">3</div></td>
+            <td><div class="button">2</div></td>
+            <td><div class="button">1</div></td>
+            <td><div class="button">+</div></td>
+        </tr>
+
+        <tr>
+            <td colspan="2" ><div class="button" style="width: 92px;">0</div></td>
+            <td><div class="button">.</div></td>
+            <td><div class="button">=</div></td>
+        </tr>
+
+    </table>
+</body>
+</html>
