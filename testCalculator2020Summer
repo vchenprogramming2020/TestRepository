@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+/*There will be additional comments written in English in this file, but not in the file I'm currently editing*/
 <head>
     <title>simple calculator</title>
     <style>
         /*设置table样式*/
+        /*Set the style of the table*/
         table {
             border: 2px solid;
             padding: 5px;
@@ -13,12 +15,14 @@
             box-shadow: 5px 5px #ffe7a6;
         }
         /*设置单元格样式*/
+        /*Set the style of the cells*/
         td {
             border: 0px;
             text-align: center;
             padding: 5px;
         }
         /*设置按钮样式*/
+        /*Set the style of the buttons*/
         .button {
             background-color: #ffdb66;
             border: none;
@@ -32,11 +36,13 @@
             border-radius: 10px;
         }
         /*设置按钮下沉样式*/
+        /*Set the style of button hover(is it this name?)*/
         .button:hover {
             background-color: #f7c52d;
             box-shadow: 0.3px 0.3px inset;
         }
         /*设置结果框样式*/
+        /*Set the style of answer box/screen(Not sure which name)*/
         .resultBox {
             background-color: #EEEEEE;
             font-family: Courier New, Courier, monospace;
@@ -54,6 +60,7 @@
             box-shadow: 1px 1px #AAAAAA inset;
         }
         /*设置标题样式*/
+        /*Set the style if page title*/
         .title {
             text-align: center;
             font-size: 18px;
@@ -63,8 +70,11 @@
     </style>
 </head>
 <body>
+    /*Create title*/
     <div class="title">Simple Calculator</div>
+    /*Create table*/
     <table align="center" border="1" width="200">
+    /*Create result box, rows, cells and buttons*/
         <tr>
             <td colspan="4"><div class="resultBox">default</div></td>
         </tr>
