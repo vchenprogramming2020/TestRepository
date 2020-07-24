@@ -67,46 +67,109 @@
             margin: 5px;
         }
     </style>
-</head>
+    <script>
+        previousNumber = 0;
+        numberBeforeOperation = 0;
+        currentResult = 0;
+        currentDecimal = 0;
+        currentDecimalPlace = 0;
+        currentOperation = "";
+
+        function refreshResult() {
+            document.getElementById("resultBox").innerHTML = currentResult; /*innerHTML是element里面的内容*/
+        }
+
+        function numberEntered(obj) {
+            digit = parseFloat(obj.innerHTML);
+            currentResult = currentResult * 10 + digit;
+            refreshResult();
+        }
+
+        function clickOperation(op) {
+            previousNumber = currentResult;
+            currentResult = 0;
+            currentOperation = op;
+            refreshResult();
+        }
+
+        function clickEqual() {
+            switch (currentOperation) {
+                case "+":
+                    currentResult = previousNumber + currentResult;
+                    break;
+                case "-":
+                    currentResult = previousNumber - currentResult;
+                    break;
+                case "×":
+                    currentResult = previousNumber * currentResult;
+                    break;
+                case "÷":
+                    currentResult = previousNumber / currentResult;
+                    break;
+            }
+            refreshResult();
+        }
+
+        function clickClear() {
+            previousNumber = 0;
+            numberBeforeOperation = 0;
+            currentResult = 0;
+            currentDecimal = 0;
+            currentDecimalPlace = 0;
+            currentOperation = "";
+            refreshResult();
+        }
+
+        function clickPercent() {
+            currentResult = currentResult / 100;
+            refreshResult();
+        }
+
+        function positiveNegative() {
+            currentResult = -currentResult;
+            refreshResult();
+        }
+    </script>
+    </head>
 <body>
-    <div class="title">Simple Calculator</div> 
-    <table align="center" border="1" width="200"> 
-        <tr> 
-            <td colspan="4"><div class="resultBox">default</div></td>
+    <div class="title">Simple Calculator</div>
+    <table align="center" border="1" width="200">
+        <tr>
+            <td colspan="4"><div class="resultBox" id="resultBox">default</div></td>
         </tr>
 
         <tr>
-            <td><div class="button">C</div></td>
-            <td><div class="button">+/-</div></td>
-            <td><div class="button">%</div></td>
-            <td><div class="button">÷</div></td>
+            <td><div class="button" id="btnClear" onclick="clickClear()">C</div></td>
+            <td><div class="button" id="btnP/N" onclick="positiveNegative()">+/-</div></td>
+            <td><div class="button" id="btnFraction" onclick="clickPercent()">%</div></td>
+            <td><div class="button" id="btnDivide" onclick='clickOperation("÷")'>÷</div></td>
         </tr>
 
         <tr>
-            <td><div class="button">9</div></td>
-            <td><div class="button">8</div></td>
-            <td><div class="button">7</div></td>
-            <td><div class="button">×</div></td>
+            <td><div class="button" id="btn9" onclick="numberEntered(this)">9</div></td>
+            <td><div class="button" id="btn8" onclick="numberEntered(this)">8</div></td>
+            <td><div class="button" id="btn7" onclick="numberEntered(this)">7</div></td>
+            <td><div class="button" id="btnMultiply" onclick='clickOperation("×")'>×</div></td>
         </tr>
 
         <tr>
-            <td><div class="button">6</div></td>
-            <td><div class="button">5</div></td>
-            <td><div class="button">4</div></td>
-            <td><div class="button">-</div></td>
+            <td><div class="button" id="btn6" onclick="numberEntered(this)">6</div></td>
+            <td><div class="button" id="btn5" onclick="numberEntered(this)">5</div></td>
+            <td><div class="button" id="btn4" onclick="numberEntered(this)">4</div></td>
+            <td><div class="button" id="btnMinus" onclick='clickOperation("-")'>-</div></td>
         </tr>
 
         <tr>
-            <td><div class="button">3</div></td>
-            <td><div class="button">2</div></td>
-            <td><div class="button">1</div></td>
-            <td><div class="button">+</div></td>
+            <td><div class="button" id="btn3" onclick="numberEntered(this)">3</div></td>
+            <td><div class="button" id="btn2" onclick="numberEntered(this)">2</div></td>
+            <td><div class="button" id="btn1" onclick="numberEntered(this)">1</div></td>
+            <td><div class="button" id="btnPlus" onclick='clickOperation("+")'>+</div></td>
         </tr>
 
         <tr>
-            <td colspan="2" ><div class="button" style="width: 92px;">0</div></td>
-            <td><div class="button">.</div></td>
-            <td><div class="button">=</div></td>
+            <td colspan="2" ><div class="button" id="btn0" onclick="numberEntered(this)" style="width: 92px;">0</div></td>
+            <td><div class="button" id="btnDecimalPoint">.</div></td>
+            <td><div class="button" id="btnEqual" onclick="clickEqual()">=</div></td>
         </tr>
 
     </table>
