@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>simple calculator</title>
+    <meta charset="UTF-8">
     <style>
         /*设置table样式*/
         /*Set the style of the table*/
@@ -34,12 +35,12 @@
             width: 30px;
             border-radius: 10px;
         }
-        /*设置按钮下沉样式*/
-        /*Set the style of button hover(is it this name?)*/
-        .button:hover {
-            background-color: #f7c52d;
-            box-shadow: 0.3px 0.3px inset;
-        }
+            /*设置按钮下沉样式*/
+            /*Set the style of button hover(is it this name?)*/
+            .button:hover {
+                background-color: #f7c52d;
+                box-shadow: 0.3px 0.3px inset;
+            }
         /*设置结果框样式*/
         /*Set the style of answer box/screen(Not sure which name)*/
         .resultBox {
@@ -54,7 +55,7 @@
             display: inline-block;
             font-size: 16px;
             width: 210px;
-            height: 30px;
+            line-height: 30px;
             border-radius: 3px;
             box-shadow: 1px 1px #AAAAAA inset;
         }
@@ -67,75 +68,133 @@
             margin: 5px;
         }
     </style>
-    <script>
+    <script>const DEFAULT_TEXT = "Enter number";
+
         previousNumber = 0;
-        numberBeforeOperation = 0;
-        currentResult = 0;
-        currentDecimal = 0;
-        currentDecimalPlace = 0;
         currentOperation = "";
+        reset = true;
+        prepareNewNumber();
 
         function refreshResult() {
-            document.getElementById("resultBox").innerHTML = currentResult; /*innerHTML是element里面的内容*/
+            document.getElementById("resultBox").innerHTML = currentNumber; /*innerHTML是element里面的内容*/
         }
 
+        /*当准备输入新的数字时，需要将currentNumber设置为默认提示语*/
+        function prepareNewNumber() {
+            currentNumber = DEFAULT_TEXT;
+        }
+
+        /*当输入位数，直接将该位数添加到当前数字的字符串后面*/
         function numberEntered(obj) {
-            digit = parseFloat(obj.innerHTML);
-            currentResult = currentResult * 10 + digit;
+            if (currentNumber == DEFAULT_TEXT)
+                currentNumber = "";
+            currentNumber = "" + currentNumber + obj.innerHTML; /* +"" 确保currentNumber是字符串*/
             refreshResult();
         }
 
+        /*当输入小数点，直接将该小数点添加到当前数字的字符串后面*/
+        /*当前数字如果已经有小数点，要忽略此次输入，直接返回*/
+        function decimalEntered(obj) {
+            if (currentNumber == DEFAULT_TEXT)
+                currentNumber = "";
+            currentNumber = "" + currentNumber + obj.innerHTML; /* + "" 以确保currentNumber是字符串*/
+            refreshResult();
+            //if (currentNumber.includes("."))
+        }
+
+        /*当点一个操作按钮*/
         function clickOperation(op) {
-            previousNumber = currentResult;
-            currentResult = 0;
+            /*把当前数字保存在previousNumber中，以备按=按钮后使用*/
+            previousNumber = currentNumber;
+            /*记下按住的是哪个按钮*/
             currentOperation = op;
+            /*准备新数字，需要将输入框清除为默认的提示文字*/
+            prepareNewNumber();
             refreshResult();
         }
 
         function clickEqual() {
+            /*将准备操作的两个数转化为数字（float），保证可以进行数学运算*/
+            /*第一个数*/
+            var n1 = parseFloat(previousNumber);
+            /*第二个数*/
+            var n2 = parseFloat(currentNumber);
+
+            console.log("n1=" + n1);
+            console.log("n2=" + n2);
+
             switch (currentOperation) {
                 case "+":
-                    currentResult = previousNumber + currentResult;
+                    currentNumber = n1 + n2;
+                    n1 = currentNumber;
                     break;
                 case "-":
-                    currentResult = previousNumber - currentResult;
+                    if (reset)
+                        currentNumber = n1 - n2
+                    else
+                        currentNumber = n2 - n1
                     break;
                 case "×":
-                    currentResult = previousNumber * currentResult;
+                    currentNumber = n1 * n2
+                    n1 = -currentNumber;
                     break;
                 case "÷":
-                    currentResult = previousNumber / currentResult;
+                    if (reset)
+                        currentNumber = n1 / n2
+                    else
+                        currentNumber = n2 / n1
                     break;
             }
+
+            /*结果的小数点部分取10位精度*/
+            currentNumber = normalizeNumber(currentNumber);
+
+            if (reset) {
+                previousNumber = n2;
+                reset = false;
+            }
+            console.log("currentNumber=" + currentNumber);
+            console.log("previousNumber=" + previousNumber);
+
             refreshResult();
         }
 
         function clickClear() {
+
             previousNumber = 0;
-            numberBeforeOperation = 0;
-            currentResult = 0;
-            currentDecimal = 0;
-            currentDecimalPlace = 0;
             currentOperation = "";
+            reset = true;
+
+            prepareNewNumber();
             refreshResult();
         }
 
         function clickPercent() {
-            currentResult = currentResult / 100;
+            currentNumber = parseFloat(currentNumber) / 100;
+            currentNumber = normalizeNumber(currentNumber);
             refreshResult();
         }
 
         function positiveNegative() {
-            currentResult = -currentResult;
+            currentNumber = -currentNumber;
+            currentNumber = normalizeNumber(currentNumber);
             refreshResult();
         }
-    </script>
-    </head>
+
+        /*将精度可能出问题的num转化为没问题的结果*/
+        function normalizeNumber(num) {
+            r = num * 10000000000;
+            r = Math.round(r);
+            r = r / 10000000000;
+            return r;
+        }</script>
+</head>
+
 <body>
     <div class="title">Simple Calculator</div>
     <table align="center" border="1" width="200">
         <tr>
-            <td colspan="4"><div class="resultBox" id="resultBox">default</div></td>
+            <td colspan="4"><div class="resultBox" id="resultBox">Enter number</div></td>
         </tr>
 
         <tr>
@@ -167,8 +226,8 @@
         </tr>
 
         <tr>
-            <td colspan="2" ><div class="button" id="btn0" onclick="numberEntered(this)" style="width: 92px;">0</div></td>
-            <td><div class="button" id="btnDecimalPoint">.</div></td>
+            <td colspan="2"><div class="button" id="btn0" onclick="numberEntered(this)" style="width: 92px;">0</div></td>
+            <td><div class="button" id="btnDecimalPoint" onclick="decimalEntered(this)">.</div></td>
             <td><div class="button" id="btnEqual" onclick="clickEqual()">=</div></td>
         </tr>
 
