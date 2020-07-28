@@ -4,6 +4,7 @@
     <title>simple calculator</title>
     <meta charset="UTF-8">
     <style>
+
         /*设置table样式*/
         /*Set the style of the table*/
         table {
@@ -14,6 +15,17 @@
             color: #ffc936;
             box-shadow: 5px 5px #ffe7a6;
         }
+        /*设置隐形table样式*/
+        /*Set table without border and background color*/
+        .emptyTable {
+            border: 0px;
+            padding: 0px;
+            border-spacing: 0px;
+            border-radius: 0px;
+            color: #ffc936;
+            box-shadow: 0px 0px #ffffff;
+        }
+
         /*设置单元格样式*/
         /*Set the style of the cells*/
         td {
@@ -33,14 +45,84 @@
             display: inline-block;
             font-size: 16px;
             width: 30px;
+            line-height: 20px;
+            border-radius: 10px;
+            font-family: "Helvetica Neue", Helvetica;
+            font-size: 16px;
+        }
+
+        /*设置按钮下沉样式*/
+        /*Set the style of button hover(is it this name?)*/
+        .button:hover {
+            background-color: #f7c52d;
+            box-shadow: 0.3px 0.3px inset;
+        }
+
+        /*设置科学计算器按钮样式*/
+        /*Set the style of button for scientific calculator*/
+        .sciButton {
+            background-color: #ccc0fa;
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            width: 30px;
+            line-height: 20px;
+            border-radius: 10px;
+            font-family: "Helvetica Neue", Helvetica;
+            font-size: 12px;
+        }
+
+        /*设置科学计算器按钮下沉样式*/
+        /*Set the style of button hover for scientific calculator*/
+        .sciButton:hover {
+            background-color: #a691ff;
+            box-shadow: 0.3px 0.3px inset;
+        }
+
+        /*设置功能性按钮样式*/
+        /*Set the style of function button*/
+        .funButton {
+            background-color: #ffa694;
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            width: 30px;
+            line-height: 20px;
+            border-radius: 10px;
+            font-family: "Helvetica Neue", Helvetica;
+            font-size: 14px;
+        }
+
+        /*设置功能性按钮下沉样式*/
+        /*Set the style of button hover for function button*/
+        .funButton:hover {
+            background-color: #ff775c;
+            box-shadow: 0.3px 0.3px inset;
+        }
+
+        /*设置空按钮样式*/
+        /*Set style of empty button*/
+        .emptyButton {
+            background-color: #ffffff;
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            width: 30px;
             border-radius: 10px;
         }
-            /*设置按钮下沉样式*/
-            /*Set the style of button hover(is it this name?)*/
-            .button:hover {
-                background-color: #f7c52d;
-                box-shadow: 0.3px 0.3px inset;
-            }
+
         /*设置结果框样式*/
         /*Set the style of answer box/screen(Not sure which name)*/
         .resultBox {
@@ -54,7 +136,7 @@
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            width: 210px;
+            width: 92%;
             line-height: 30px;
             border-radius: 3px;
             box-shadow: 1px 1px #AAAAAA inset;
@@ -67,6 +149,19 @@
             font-family: Courier New, Courier, monospace;
             margin: 5px;
         }
+
+        /*显示科学计算器*/
+        /*Show the scientific panel*/
+        .showPanel {
+            display: block;
+        }
+
+        /*隐藏科学计算器*/
+        /*Hide the scitific panel*/
+        .hidePanel {
+            display: none;
+        }
+
     </style>
     <script>const DEFAULT_TEXT = "Enter number";
 
@@ -75,6 +170,8 @@
         reset = true;
         prepareNewNumber();
 
+        /*刷新结果*/
+        /*Refresh the result*/
         function refreshResult() {
             document.getElementById("resultBox").innerHTML = currentNumber; /*innerHTML是element里面的内容*/
         }
@@ -84,10 +181,18 @@
             currentNumber = DEFAULT_TEXT;
         }
 
+        /*设置可输入的最大的数字*/
+        function isMaxReached(digit) {
+            textnumber = "" + currentNumber + digit;
+            return ((parseFloat(textnumber) >= Number.MAX_SAFE_INTEGER) || textnumber.length > 22);
+        }
+
         /*当输入位数，直接将该位数添加到当前数字的字符串后面*/
         function numberEntered(obj) {
             if (currentNumber == DEFAULT_TEXT)
                 currentNumber = "";
+            if (isMaxReached(obj.innerHTML))
+                return;
             currentNumber = "" + currentNumber + obj.innerHTML; /* +"" 确保currentNumber是字符串*/
             refreshResult();
         }
@@ -95,15 +200,18 @@
         /*当输入小数点，直接将该小数点添加到当前数字的字符串后面*/
         /*当前数字如果已经有小数点，要忽略此次输入，直接返回*/
         function decimalEntered(obj) {
+            if (currentNumber.includes("."))
+                return;
             if (currentNumber == DEFAULT_TEXT)
                 currentNumber = "";
             currentNumber = "" + currentNumber + obj.innerHTML; /* + "" 以确保currentNumber是字符串*/
             refreshResult();
-            //if (currentNumber.includes("."))
         }
 
         /*当点一个操作按钮*/
         function clickOperation(op) {
+            reset = true;
+
             /*把当前数字保存在previousNumber中，以备按=按钮后使用*/
             previousNumber = currentNumber;
             /*记下按住的是哪个按钮*/
@@ -126,33 +234,36 @@
             switch (currentOperation) {
                 case "+":
                     currentNumber = n1 + n2;
-                    n1 = currentNumber;
                     break;
+
                 case "-":
                     if (reset)
-                        currentNumber = n1 - n2
+                        currentNumber = n1 - n2;
                     else
-                        currentNumber = n2 - n1
+                        currentNumber = n2 - n1;
                     break;
+
                 case "×":
-                    currentNumber = n1 * n2
-                    n1 = -currentNumber;
+                    currentNumber = n1 * n2;
                     break;
+
                 case "÷":
                     if (reset)
-                        currentNumber = n1 / n2
+                        currentNumber = n1 / n2;
                     else
-                        currentNumber = n2 / n1
+                        currentNumber = n2 / n1;
                     break;
             }
-
-            /*结果的小数点部分取10位精度*/
-            currentNumber = normalizeNumber(currentNumber);
 
             if (reset) {
                 previousNumber = n2;
                 reset = false;
             }
+
+
+            /*结果的小数点部分取10位精度*/
+            currentNumber = normalizeNumber(currentNumber);
+
             console.log("currentNumber=" + currentNumber);
             console.log("previousNumber=" + previousNumber);
 
@@ -187,6 +298,20 @@
             r = Math.round(r);
             r = r / 10000000000;
             return r;
+        }
+
+        // Scientific Calculator
+
+        function switchSci() {
+            sciPabel = document.getElementById("sciPanel");
+
+            currentState = sciPanel.getAttribute("class");
+            console.log("sciPabel class=" + currentState);
+
+            if (currentState.includes("hidePanel"))
+                sciPanel.setAttribute("class", "showPanel");
+            else
+                sciPanel.setAttribute("class", "hidePanel");
         }</script>
 </head>
 
@@ -198,37 +323,98 @@
         </tr>
 
         <tr>
-            <td><div class="button" id="btnClear" onclick="clickClear()">C</div></td>
-            <td><div class="button" id="btnP/N" onclick="positiveNegative()">+/-</div></td>
-            <td><div class="button" id="btnFraction" onclick="clickPercent()">%</div></td>
-            <td><div class="button" id="btnDivide" onclick='clickOperation("÷")'>÷</div></td>
-        </tr>
+            <td id="sciPanel" class="hidePanel">
+                <table class="emptyTable" align="center" border="0" width="200">
+                    <tr>
+                        <td><div class="emptyButton">|</div></td>
+                        <td><div class="emptyButton">|</div></td>
+                        <td><div class="emptyButton">|</div></td>
+                        <td><div class="emptyButton">|</div></td>
+                    </tr>
 
-        <tr>
-            <td><div class="button" id="btn9" onclick="numberEntered(this)">9</div></td>
-            <td><div class="button" id="btn8" onclick="numberEntered(this)">8</div></td>
-            <td><div class="button" id="btn7" onclick="numberEntered(this)">7</div></td>
-            <td><div class="button" id="btnMultiply" onclick='clickOperation("×")'>×</div></td>
-        </tr>
+                    <tr>
+                        <td><div class="sciButton">1/x</div></td>
+                        <td><div class="sciButton">e</div></td>
+                        <td><div class="sciButton">e^x</div></td>
+                        <td><div class="sciButton">ln</div></td>
+                    </tr>
 
-        <tr>
-            <td><div class="button" id="btn6" onclick="numberEntered(this)">6</div></td>
-            <td><div class="button" id="btn5" onclick="numberEntered(this)">5</div></td>
-            <td><div class="button" id="btn4" onclick="numberEntered(this)">4</div></td>
-            <td><div class="button" id="btnMinus" onclick='clickOperation("-")'>-</div></td>
-        </tr>
+                    <tr>
+                        <td><div class="sciButton">x!</div></td>
+                        <td><div class="sciButton">x^2</div></td>
+                        <td><div class="sciButton">x^3</div></td>
+                        <td><div class="sciButton">x^y</div></td>
+                    </tr>
 
-        <tr>
-            <td><div class="button" id="btn3" onclick="numberEntered(this)">3</div></td>
-            <td><div class="button" id="btn2" onclick="numberEntered(this)">2</div></td>
-            <td><div class="button" id="btn1" onclick="numberEntered(this)">1</div></td>
-            <td><div class="button" id="btnPlus" onclick='clickOperation("+")'>+</div></td>
-        </tr>
+                    <tr>
+                        <td><div class="sciButton">pi</div></td>
+                        <td><div class="sciButton">sqrt(x)</div></td>
+                        <td><div class="sciButton">sqrt^3(x)</div></td>
+                        <td><div class="sciButton">sqrt^y(x)</div></td>
+                    </tr>
 
-        <tr>
-            <td colspan="2"><div class="button" id="btn0" onclick="numberEntered(this)" style="width: 92px;">0</div></td>
-            <td><div class="button" id="btnDecimalPoint" onclick="decimalEntered(this)">.</div></td>
-            <td><div class="button" id="btnEqual" onclick="clickEqual()">=</div></td>
+                    <tr>
+                        <td><div class="sciButton">log10</div></td>
+                        <td><div class="sciButton">sin</div></td>
+                        <td><div class="sciButton">cos</div></td>
+                        <td><div class="sciButton">tan</div></td>
+                    </tr>
+
+                    <tr>
+                        <td><div class="sciButton">logx</div></td>
+                        <td><div class="sciButton">asin</div></td>
+                        <td><div class="sciButton">acos</div></td>
+                        <td><div class="sciButton">atan</div></td>
+                    </tr>
+
+                </table>
+            </td>
+            <td>
+                <table class="emptyTable" align="center" border="0" width="200">
+                    <tr>
+                        <td><div class="funButton" id="btnClear" onclick="switchSci()">SCI</div></td>
+                        <td><div class="emptyButton" id="btnP/N" onclick="positiveNegative()"></div></td>
+                        <td><div class="emptyButton" id="btnFraction" onclick="clickPercent()"></div></td>
+                        <td><div class="emptyButton" id="btnDivide" onclick='clickOperation("÷")'></div></td>
+                    </tr>
+
+                    <tr>
+                        <td><div class="button" id="btnClear" onclick="clickClear()">C</div></td>
+                        <td><div class="button" id="btnP/N" onclick="positiveNegative()">+/-</div></td>
+                        <td><div class="button" id="btnFraction" onclick="clickPercent()">⁒</div></td>
+                        <td><div class="button" id="btnDivide" onclick='clickOperation("÷")'>÷</div></td>
+                    </tr>
+
+                    <tr>
+                        <td><div class="button" id="btn9" onclick="numberEntered(this)">9</div></td>
+                        <td><div class="button" id="btn8" onclick="numberEntered(this)">8</div></td>
+                        <td><div class="button" id="btn7" onclick="numberEntered(this)">7</div></td>
+                        <td><div class="button" id="btnMultiply" onclick='clickOperation("×")'>×</div></td>
+                    </tr>
+
+                    <tr>
+                        <td><div class="button" id="btn6" onclick="numberEntered(this)">6</div></td>
+                        <td><div class="button" id="btn5" onclick="numberEntered(this)">5</div></td>
+                        <td><div class="button" id="btn4" onclick="numberEntered(this)">4</div></td>
+                        <td><div class="button" id="btnMinus" onclick='clickOperation("-")'>-</div></td>
+                    </tr>
+
+                    <tr>
+                        <td><div class="button" id="btn3" onclick="numberEntered(this)">3</div></td>
+                        <td><div class="button" id="btn2" onclick="numberEntered(this)">2</div></td>
+                        <td><div class="button" id="btn1" onclick="numberEntered(this)">1</div></td>
+                        <td><div class="button" id="btnPlus" onclick='clickOperation("+")'>+</div></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"><div class="button" id="btn0" onclick="numberEntered(this)" style="width: 92px;">0</div></td>
+                        <td><div class="button" id="btnDecimalPoint" onclick="decimalEntered(this)">.</div></td>
+                        <td><div class="button" id="btnEqual" onclick="clickEqual()">=</div></td>
+                    </tr>
+
+                </table>
+
+            </td>
         </tr>
 
     </table>
