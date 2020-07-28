@@ -70,7 +70,9 @@
             display: inline-block;
             font-size: 16px;
             width: 30px;
+            height: 20px;
             line-height: 20px;
+            vertical-align: middle;
             border-radius: 10px;
             font-family: "Helvetica Neue", Helvetica;
             font-size: 12px;
@@ -86,7 +88,8 @@
         /*设置功能性按钮样式*/
         /*Set the style of function button*/
         .funButton {
-            background-color: #ffa694;
+            background-color: #6da0e8;
+            /*background-color: #bfdef2;*/
             border: none;
             color: white;
             padding: 10px 10px;
@@ -104,6 +107,30 @@
         /*设置功能性按钮下沉样式*/
         /*Set the style of button hover for function button*/
         .funButton:hover {
+            background-color: #5393ed;
+            /*background-color: #9ec5de;*/
+            box-shadow: 0.3px 0.3px inset;
+        }
+
+        /*设置clear按钮样式*/
+        .clearButton {
+            background-color: #ffa694;
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            width: 30px;
+            line-height: 20px;
+            border-radius: 10px;
+            font-family: "Helvetica Neue", Helvetica;
+            font-size: 16px;
+        }
+
+        /*设置clear按钮下沉样式*/
+        .clearButton:hover {
             background-color: #ff775c;
             box-shadow: 0.3px 0.3px inset;
         }
@@ -208,6 +235,16 @@
             refreshResult();
         }
 
+        function factorializeNumber(num) {
+            if (num < 0)
+                return;
+            else if (num == 0)
+                return 1;
+            else {
+                return (num * factorializeNumber(num - 1));
+            }
+        }
+
         /*当点一个操作按钮*/
         function clickOperation(op) {
             reset = true;
@@ -253,6 +290,17 @@
                     else
                         currentNumber = n2 / n1;
                     break;
+
+                case "powerTo":
+                    currentNumber = Math.pow(n1, n2);
+                    break;
+
+                case "root":
+                    currentNumber = Math.pow(n1, 1 / n2);
+                    break;
+
+                case "logNumber":
+                    break;
             }
 
             if (reset) {
@@ -269,6 +317,100 @@
 
             refreshResult();
         }
+
+        function clickInstantOperation(op) {
+            var n1 = parseFloat(currentNumber);
+            var pi = Math.PI;
+            if (isNaN(n1))
+                return;
+            n1r = (n1 % 360) / 180 * pi;
+            console.log(op);
+            switch (op) {
+                case "reciprocal":
+                    currentNumber = 1 / n1;
+                    break;
+
+                case "square":
+                    currentNumber = Math.pow(n1, 2);
+                    break;
+
+                case "cube":
+                    currentNumber = Math.pow(n1, 3);
+                    break;
+
+                case "squareRoot":
+                    currentNumber = Math.sqrt(n1);
+                    break;
+
+                case "cubeRoot":
+                    currentNumber = Math.cbrt(n1);
+                    break;
+
+                case "log10":
+                    currentNumber = Math.log10(n1);
+                    break;
+
+                case "ln":
+                    currentNumber = Math.log(n1);
+                    break;
+
+                case "sin":
+                    currentNumber = Math.sin(n1r);
+                    break;
+
+                case "cos":
+                    currentNumber = Math.cos(n1r);
+                    break;
+
+                case "tan":
+                    currentNumber = Math.tan(n1r);
+                    break;
+
+                case "arcsin":
+                    r = Math.asin(n1);
+                    currentNumber = r * 180 / pi;
+                    break;
+
+                case "arccos":
+                    r = Math.acos(n1);
+                    currentNumber = r * 180 / pi;
+                    break;
+
+                case "arctan":
+                    r = Math.atan(n1);
+                    currentNumber = r * 180 / pi;
+                    break;
+
+                case "factorialize":
+                    currentNumber = factorializeNumber(n1);
+                    break;
+
+                case "eulerNumberToPower":
+                    currentNumber = Math.pow(2.7182818285, n1);
+                    break;
+            }
+            currentNumber = normalizeNumber(currentNumber);
+            previousNumber = currentNumber;
+            refreshResult();
+        }
+
+        function instantInput(op) {
+            console.log(op);
+            var n1 = parseFloat(currentNumber);
+            if (!isNaN(n1))
+                previousNumber = n1;
+            switch (op) {
+                case "pi":
+                    currentNumber = 3.1415926536;
+                    break;
+
+                case "eulerNumber":
+                    currentNumber = 2.7182818285;
+
+            }
+            refreshResult();
+        }
+
 
         function clickClear() {
 
@@ -333,38 +475,38 @@
                     </tr>
 
                     <tr>
-                        <td><div class="sciButton">1/x</div></td>
-                        <td><div class="sciButton">e</div></td>
-                        <td><div class="sciButton">e^x</div></td>
-                        <td><div class="sciButton">ln</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('reciprocal')">1/x</div></td>
+                        <td><div class="sciButton" onclick="instantInput('eulerNumber')">e</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('eulerNumberToPower')">e<sup>x</sup></div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('ln')">ln</div></td>
                     </tr>
 
                     <tr>
-                        <td><div class="sciButton">x!</div></td>
-                        <td><div class="sciButton">x^2</div></td>
-                        <td><div class="sciButton">x^3</div></td>
-                        <td><div class="sciButton">x^y</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('factorialize')">x!</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('square')">x<sup>2</sup></div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('cube')">x<sup>3</sup></div></td>
+                        <td><div class="sciButton" onclick="clickOperation('powerTo')">x<sup>y</sup></div></td>
                     </tr>
 
                     <tr>
-                        <td><div class="sciButton">pi</div></td>
-                        <td><div class="sciButton">sqrt(x)</div></td>
-                        <td><div class="sciButton">sqrt^3(x)</div></td>
-                        <td><div class="sciButton">sqrt^y(x)</div></td>
+                        <td><div class="sciButton" onclick="instantInput('pi')">π</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('squareRoot')">√x</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('cubeRoot')"><sup>3</sup>√x</div></td>
+                        <td><div class="sciButton" onclick="clickOperation('root')"><sup>y</sup>√x</div></td>
                     </tr>
 
                     <tr>
-                        <td><div class="sciButton">log10</div></td>
-                        <td><div class="sciButton">sin</div></td>
-                        <td><div class="sciButton">cos</div></td>
-                        <td><div class="sciButton">tan</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('log10')">log<sub>10</sub></div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('sin')">sin</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('cos')">cos</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('tan')">tan</div></td>
                     </tr>
 
                     <tr>
-                        <td><div class="sciButton">logx</div></td>
-                        <td><div class="sciButton">asin</div></td>
-                        <td><div class="sciButton">acos</div></td>
-                        <td><div class="sciButton">atan</div></td>
+                        <td><div class="sciButton" onclick="clickOperation('logNumber')">log<sub>x</sub></div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('arcsin')">asin</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('arccos')">acos</div></td>
+                        <td><div class="sciButton" onclick="clickInstantOperation('arctan')">atan</div></td>
                     </tr>
 
                 </table>
@@ -372,14 +514,14 @@
             <td>
                 <table class="emptyTable" align="center" border="0" width="200">
                     <tr>
-                        <td><div class="funButton" id="btnClear" onclick="switchSci()">SCI</div></td>
-                        <td><div class="emptyButton" id="btnP/N" onclick="positiveNegative()"></div></td>
-                        <td><div class="emptyButton" id="btnFraction" onclick="clickPercent()"></div></td>
-                        <td><div class="emptyButton" id="btnDivide" onclick='clickOperation("÷")'></div></td>
+                        <td><div class="funButton" id="btnScience" onclick="switchSci()">SCI</div></td>
+                        <td><div class="emptyButton"></div></td>
+                        <td><div class="emptyButton"></div></td>
+                        <td><div class="emptyButton"></div></td>
                     </tr>
 
                     <tr>
-                        <td><div class="button" id="btnClear" onclick="clickClear()">C</div></td>
+                        <td><div class="clearButton" id="btnClear" onclick="clickClear()">C</div></td>
                         <td><div class="button" id="btnP/N" onclick="positiveNegative()">+/-</div></td>
                         <td><div class="button" id="btnFraction" onclick="clickPercent()">⁒</div></td>
                         <td><div class="button" id="btnDivide" onclick='clickOperation("÷")'>÷</div></td>
