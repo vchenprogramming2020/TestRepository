@@ -12,8 +12,8 @@
             padding: 5px;
             border-spacing: 0px;
             border-radius: 5px;
-            color: #ffc936;
-            box-shadow: 5px 5px #ffe7a6;
+            color: #b2cfdb;
+            box-shadow: 5px 5px #d5eaeb;
         }
         /*设置隐形table样式*/
         /*Set table without border and background color*/
@@ -36,9 +36,9 @@
         /*设置按钮样式*/
         /*Set the style of the buttons*/
         .button {
-            background-color: #ffdb66;
+            background-color: #d7f4f5;
             border: none;
-            color: white;
+            color: black;
             padding: 10px 10px;
             text-align: center;
             text-decoration: none;
@@ -47,23 +47,23 @@
             width: 30px;
             line-height: 20px;
             border-radius: 10px;
-            font-family: "Helvetica Neue", Helvetica;
+            font-family: "Courier New", Courier, monospace;
             font-size: 16px;
         }
 
-        /*设置按钮下沉样式*/
-        /*Set the style of button hover(is it this name?)*/
-        .button:hover {
-            background-color: #f7c52d;
-            box-shadow: 0.3px 0.3px inset;
-        }
+            /*设置按钮下沉样式*/
+            /*Set the style of button hover(is it this name?)*/
+            .button:hover {
+                background-color: #bcd5d6;
+                /*box-shadow: 0.2px 0.2px inset;*/
+            }
 
         /*设置科学计算器按钮样式*/
         /*Set the style of button for scientific calculator*/
         .sciButton {
-            background-color: #ccc0fa;
+            background-color: #ebebeb;
             border: none;
-            color: white;
+            color: black;
             padding: 10px 10px;
             text-align: center;
             text-decoration: none;
@@ -74,24 +74,24 @@
             line-height: 20px;
             vertical-align: middle;
             border-radius: 10px;
-            font-family: "Helvetica Neue", Helvetica;
+            font-family: "Courier New", Courier, monospace;
             font-size: 12px;
         }
 
-        /*设置科学计算器按钮下沉样式*/
-        /*Set the style of button hover for scientific calculator*/
-        .sciButton:hover {
-            background-color: #a691ff;
-            box-shadow: 0.3px 0.3px inset;
-        }
+            /*设置科学计算器按钮下沉样式*/
+            /*Set the style of button hover for scientific calculator*/
+            .sciButton:hover {
+                background-color: #c2c2c2;
+                /*box-shadow: 0.2px 0.2px inset;*/
+            }
 
         /*设置功能性按钮样式*/
         /*Set the style of function button*/
         .funButton {
-            background-color: #6da0e8;
+            background-color: #e1e6e8;
             /*background-color: #bfdef2;*/
             border: none;
-            color: white;
+            color: black;
             padding: 10px 10px;
             text-align: center;
             text-decoration: none;
@@ -100,23 +100,23 @@
             width: 30px;
             line-height: 20px;
             border-radius: 10px;
-            font-family: "Helvetica Neue", Helvetica;
+            font-family: "Courier New", Courier, monospace;
             font-size: 14px;
         }
 
-        /*设置功能性按钮下沉样式*/
-        /*Set the style of button hover for function button*/
-        .funButton:hover {
-            background-color: #5393ed;
-            /*background-color: #9ec5de;*/
-            box-shadow: 0.3px 0.3px inset;
-        }
+            /*设置功能性按钮下沉样式*/
+            /*Set the style of button hover for function button*/
+            .funButton:hover {
+                background-color: #bac7cc;
+                /*background-color: #9ec5de;*/
+                /*box-shadow: 0.2px 0.2px inset;*/
+            }
 
         /*设置clear按钮样式*/
         .clearButton {
-            background-color: #ffa694;
+            background-color: #ffd4d4;
             border: none;
-            color: white;
+            color: black;
             padding: 10px 10px;
             text-align: center;
             text-decoration: none;
@@ -125,15 +125,15 @@
             width: 30px;
             line-height: 20px;
             border-radius: 10px;
-            font-family: "Helvetica Neue", Helvetica;
+            font-family: "Courier New", Courier, monospace;
             font-size: 16px;
         }
 
-        /*设置clear按钮下沉样式*/
-        .clearButton:hover {
-            background-color: #ff775c;
-            box-shadow: 0.3px 0.3px inset;
-        }
+            /*设置clear按钮下沉样式*/
+            .clearButton:hover {
+                background-color: #f2bfbf;
+                /*box-shadow: 0.2px 0.2px inset;*/
+            }
 
         /*设置空按钮样式*/
         /*Set style of empty button*/
@@ -153,7 +153,7 @@
         /*设置结果框样式*/
         /*Set the style of answer box/screen(Not sure which name)*/
         .resultBox {
-            background-color: #EEEEEE;
+            background-color: #f0f0f0;
             font-family: Courier New, Courier, monospace;
             border: none;
             color: black;
@@ -166,7 +166,7 @@
             width: 92%;
             line-height: 30px;
             border-radius: 3px;
-            box-shadow: 1px 1px #AAAAAA inset;
+            box-shadow: 0.5px 0.5px #AAAAAA inset;
         }
         /*设置标题样式*/
         /*Set the style of page title*/
@@ -188,7 +188,6 @@
         .hidePanel {
             display: none;
         }
-
     </style>
     <script>const DEFAULT_TEXT = "Enter number";
 
@@ -237,7 +236,7 @@
 
         function factorializeNumber(num) {
             if (num < 0)
-                return;
+                return -(Math.abs(num * factorializeNumber(num + 1)));
             else if (num == 0)
                 return 1;
             else {
@@ -300,6 +299,7 @@
                     break;
 
                 case "logNumber":
+                    currentNumber = Math.log(n1) / Math.log(n2);
                     break;
             }
 
@@ -514,8 +514,7 @@
             <td>
                 <table class="emptyTable" align="center" border="0" width="200">
                     <tr>
-                        <td><div class="funButton" id="btnScience" onclick="switchSci()">SCI</div></td>
-                        <td><div class="emptyButton"></div></td>
+                        <td colspan="2"><div class="funButton" id="btnScience" onclick="switchSci()" style="width: 92px;">SCI</div></td>
                         <td><div class="emptyButton"></div></td>
                         <td><div class="emptyButton"></div></td>
                     </tr>
