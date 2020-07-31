@@ -238,7 +238,9 @@
             currentNumber = "" + currentNumber + obj.innerHTML; /* + "" 以确保currentNumber是字符串*/
             refreshResult();
         }
-
+        
+        /*当点击阶乘按钮*/
+        /*When clicked on factorialize number button*/
         function factorializeNumber(num) {
             if (num < 0)
                 return -(Math.abs(num * factorializeNumber(num + 1)));
