@@ -203,17 +203,20 @@
         }
 
         /*当准备输入新的数字时，需要将currentNumber设置为默认提示语*/
+        /*Set current number to default text when entering new number*/
         function prepareNewNumber() {
             currentNumber = DEFAULT_TEXT;
         }
 
         /*设置可输入的最大的数字*/
+        /*Set the limit of number*/
         function isMaxReached(digit) {
             textnumber = "" + currentNumber + digit;
             return ((parseFloat(textnumber) >= Number.MAX_SAFE_INTEGER) || textnumber.length > 22);
         }
 
         /*当输入位数，直接将该位数添加到当前数字的字符串后面*/
+        /*Add number to string when entered by number*/
         function numberEntered(obj) {
             if (currentNumber == DEFAULT_TEXT)
                 currentNumber = "";
@@ -225,6 +228,8 @@
 
         /*当输入小数点，直接将该小数点添加到当前数字的字符串后面*/
         /*当前数字如果已经有小数点，要忽略此次输入，直接返回*/
+        /*Enter decimal point to string*/
+        /*If there's already a decimal point, ignore the input*/
         function decimalEntered(obj) {
             if (currentNumber.includes("."))
                 return;
@@ -245,6 +250,7 @@
         }
 
         /*当点一个操作按钮*/
+        /*When clicked on a operation button*/
         function clickOperation(op) {
             reset = true;
 
@@ -257,11 +263,16 @@
             refreshResult();
         }
 
+        /*当点equal按钮*/
+        /*When clicked on the equal button*/
         function clickEqual() {
             /*将准备操作的两个数转化为数字（float），保证可以进行数学运算*/
+            /*Transfer the numbers into float*/
             /*第一个数*/
+            /*First number*/
             var n1 = parseFloat(previousNumber);
             /*第二个数*/
+            /*Second number*/
             var n2 = parseFloat(currentNumber);
 
             console.log("n1=" + n1);
@@ -310,6 +321,7 @@
 
 
             /*结果的小数点部分取10位精度*/
+            /*Normalize the number to avoid error*/
             currentNumber = normalizeNumber(currentNumber);
 
             console.log("currentNumber=" + currentNumber);
@@ -318,6 +330,8 @@
             refreshResult();
         }
 
+        /*当点击立即生效的按钮*/
+        /*When click on instant operation button*/
         function clickInstantOperation(op) {
             var n1 = parseFloat(currentNumber);
             var pi = Math.PI;
@@ -394,6 +408,8 @@
             refreshResult();
         }
 
+        /*当点击立即生效的input*/
+        /*When click on instant input*/
         function instantInput(op) {
             console.log(op);
             var n1 = parseFloat(currentNumber);
@@ -411,7 +427,8 @@
             refreshResult();
         }
 
-
+        /*当点击clear按钮*/
+        /*When click on clear button*/
         function clickClear() {
 
             previousNumber = 0;
@@ -422,12 +439,16 @@
             refreshResult();
         }
 
+        /*当点击百分比按钮*/
+        /*When click on percent button*/
         function clickPercent() {
             currentNumber = parseFloat(currentNumber) / 100;
             currentNumber = normalizeNumber(currentNumber);
             refreshResult();
         }
 
+        /*当点击正负按钮*/
+        /*When click on positive/negative button*/
         function positiveNegative() {
             currentNumber = -currentNumber;
             currentNumber = normalizeNumber(currentNumber);
@@ -435,6 +456,7 @@
         }
 
         /*将精度可能出问题的num转化为没问题的结果*/
+        /*Normalize number function to ten places to avoid number such as 1.1+2.2=3.3000000000000003*/
         function normalizeNumber(num) {
             r = num * 10000000000;
             r = Math.round(r);
@@ -442,8 +464,11 @@
             return r;
         }
 
-        // Scientific Calculator
+        /*科学计算器*/
+        /*Scientific Calculator*/
 
+        /*切换至科学计算器按钮*/
+        /*Expand button for scientific calculator*/
         function switchSci() {
             sciPabel = document.getElementById("sciPanel");
 
